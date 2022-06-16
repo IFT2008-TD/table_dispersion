@@ -74,7 +74,7 @@ void TableDeDispersion<Cle_type, Valeur_type, Hash_type>::inserer(const Cle &cle
     cellule.valeur = valeur ;
     cellule.etat = Occupe ;
     ++ cardinal ;
-    if (capacite / cardinal <= 2) rehacher() ;
+    if (capacite  <= 2 * cardinal) rehacher() ;
 }
 
 /**
@@ -156,7 +156,7 @@ TableDeDispersion<Cle_type, Valeur_type, Hash_type>::TableDeDispersion(std::init
 template<typename Cle_type, typename Valeur_type, typename Hash_type>
 void TableDeDispersion<Cle_type, Valeur_type, Hash_type>::rehacher() {
 
-    std::vector<Cellule> copie = table ;
+    std::vector<Cellule> copie = std::move(table) ;
     table.clear() ;
 
     capacite = prochain_premier(2 * capacite) ;
