@@ -68,13 +68,7 @@ private:
  */
 template<typename Cle_type, typename Valeur_type, typename Hash_type>
 void TableDeDispersion<Cle_type, Valeur_type, Hash_type>::inserer(const Cle &cle, const Valeur &valeur) {
-    auto& cellule = table.at(index(cle)) ;
-    if (cellule.etat == Occupe) throw std::runtime_error("inserer: insertion dans une cellule occupée") ;
-    cellule.cle = cle ;
-    cellule.valeur = valeur ;
-    cellule.etat = Occupe ;
-    ++ cardinal ;
-    if (capacite  <= 2 * cardinal) rehacher() ;
+
 }
 
 /**
@@ -88,9 +82,7 @@ void TableDeDispersion<Cle_type, Valeur_type, Hash_type>::inserer(const Cle &cle
  */
 template<typename Cle_type, typename Valeur_type, typename Hash_type>
 const Valeur_type &TableDeDispersion<Cle_type, Valeur_type, Hash_type>::rechercher(const Cle &cle) const {
-    const auto& cellule = table.at(index(cle)) ;
-    if (cellule.cle == cle && cellule.etat == Occupe) return cellule.valeur ;
-    throw std::runtime_error("rechercher: clé absente") ;
+
 
 }
 
@@ -104,12 +96,7 @@ const Valeur_type &TableDeDispersion<Cle_type, Valeur_type, Hash_type>::recherch
  */
 template<typename Cle_type, typename Valeur_type, typename Hash_type>
 void TableDeDispersion<Cle_type, Valeur_type, Hash_type>::retirer(const Cle &cle) {
-    auto& cellule = table.at(index(cle)) ;
-    if (cellule.cle == cle && cellule.etat == Occupe) {
-        cellule.etat = Efface ;
-        -- cardinal ;
-    }
-    else throw std::runtime_error("retirer: clé absente") ;
+
 }
 
 /**
@@ -123,7 +110,7 @@ void TableDeDispersion<Cle_type, Valeur_type, Hash_type>::retirer(const Cle &cle
 template<typename Cle_type, typename Valeur_type, typename Hash_type>
 TableDeDispersion<Cle_type, Valeur_type, Hash_type>::TableDeDispersion(size_t capacite) :
 table(capacite), capacite(capacite), cardinal(0),  hacheur(capacite) {
-    if (capacite > Capacite_Maximale) throw std::invalid_argument ("Constructeur: capacité maximale dépassée.") ;
+
 }
 
 /**
@@ -140,8 +127,7 @@ TableDeDispersion<Cle_type, Valeur_type, Hash_type>::TableDeDispersion(std::init
                                                                        std::initializer_list<Valeur> valeurs) :
         table(), capacite(capacite), cardinal(0), hacheur(capacite) {
 
-    if (cles.size() != valeurs.size()) throw std::runtime_error("Listes d'initialisations fautives dans le constructeur.") ;
-    for (auto cle: cles) inserer(cle, *valeurs.begin());
+
 
 
 }
@@ -156,15 +142,7 @@ TableDeDispersion<Cle_type, Valeur_type, Hash_type>::TableDeDispersion(std::init
 template<typename Cle_type, typename Valeur_type, typename Hash_type>
 void TableDeDispersion<Cle_type, Valeur_type, Hash_type>::rehacher() {
 
-    std::vector<Cellule> copie = std::move(table) ;
-    table.clear() ;
 
-    capacite = prochain_premier(2 * capacite) ;
-    table.resize(capacite) ;
-    hacheur.reinitialiser(capacite) ;
-
-    for (auto cellule: table) cellule.etat = Libre ;
-    for (auto cellule: copie) if (cellule.etat == Occupe) inserer(cellule.cle, cellule.valeur) ;
 }
 
 /**
@@ -177,16 +155,7 @@ void TableDeDispersion<Cle_type, Valeur_type, Hash_type>::rehacher() {
  */
 template<typename Cle_type, typename Valeur_type, typename Hash_type>
 size_t TableDeDispersion<Cle_type, Valeur_type, Hash_type>::index(const Cle &cle) const {
-    size_t tentative = 0 ;
-    size_t i = hacheur(cle, tentative) ;
-    auto cellule = table.at(i) ;
-    while (cellule.cle != cle && cellule.etat != Libre) {
-        ++ tentative ;
-        i = hacheur(cle, tentative) ;
-        cellule = table.at(i) ;
-        assert(tentative < 1000) ;
-    }
-    return  i ;
+
 }
 
 /**
@@ -197,8 +166,7 @@ size_t TableDeDispersion<Cle_type, Valeur_type, Hash_type>::index(const Cle &cle
  */
 template<typename Cle_type, typename Valeur_type, typename Hash_type>
 void TableDeDispersion<Cle_type, Valeur_type, Hash_type>::effacer() {
-    cardinal = 0 ;
-    for (auto cellule: table) cellule.etat = Libre ;
+
 }
 
 /**
