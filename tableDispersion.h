@@ -217,8 +217,8 @@ size_t TableDeDispersion<Cle_type, Valeur_type, Hash_type>::prochain_premier(siz
 }
 
 /**
- * Test de primalité Miller-Rabin. Le test est déterministe si l'essai est fait avec les témoins 2, 7 et 61 pour les
- * entiers non-signés de 32 bits.
+ * Méthode bête et méchante, vu qu'on ne manipule pas de très gros nombres ce sera acceptable.  L'idéal aurait été de
+ * prendre le test de Miller-Rabin.
  * @tparam Cle_type
  * @tparam Valeur_type
  * @tparam Hash_type
